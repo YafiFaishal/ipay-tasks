@@ -3,91 +3,184 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IPAY Task - Financial Task Management</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>IPAY Task - Glassmorphism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style/main.css">
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
+  <div class="background-mesh"></div>
+  
   <div class="layout">
     <aside class="sidebar">
       <div class="logo">
-        <i data-lucide="wallet"></i> IPAY Task
+        <i data-lucide="wallet"></i> <span class="logo-text">IPAY Task</span>
       </div>
       <nav class="nav">
-        <a href="#" class="nav-item active"><i data-lucide="layout-dashboard"></i> Dashboard</a>
-        <a href="#" class="nav-item"><i data-lucide="check-circle"></i> My Tasks</a>
-        <a href="#" class="nav-item"><i data-lucide="calendar"></i> Upcoming</a>
-        <a href="#" class="nav-item"><i data-lucide="flag"></i> Priority</a>
+        <button class="nav-item active" data-target="dashboard"><i data-lucide="layout-dashboard"></i> <span class="nav-text">Dashboard</span></button>
+        <button class="nav-item" data-target="tasks"><i data-lucide="check-circle"></i> <span class="nav-text">My Tasks</span></button>
+        <button class="nav-item" data-target="priority"><i data-lucide="flag"></i> <span class="nav-text">Priority</span></button>
       </nav>
     </aside>
 
     <main class="main-content">
       <header class="topbar">
-        <h1 class="page-title">Dashboard</h1>
-        <div class="avatar">U</div>
+        <h1 class="page-title" id="main-page-title">Dashboard</h1>
+        <div class="topbar-actions">
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+            <i data-lucide="sun" class="icon-sun"></i>
+            <i data-lucide="moon" class="icon-moon"></i>
+          </button>
+          <div class="avatar">U</div>
+        </div>
       </header>
 
-      <div class="stats-bar">
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-label">Total Tasks</span>
-            <span class="stat-value" id="stat-total-val">0</span>
+      <div class="pages-container">
+        <!-- Dashboard Page -->
+        <div id="page-dashboard" class="page active">
+          <h2 class="greeting" id="greeting">Good morning, User</h2>
+          
+          <div class="stats-grid">
+            <div class="stat-card glass-panel">
+              <div class="stat-label">Total Tasks</div>
+              <div class="stat-value gradient-text" id="stat-total">0</div>
+            </div>
+            <div class="stat-card glass-panel">
+              <div class="stat-label">Completed</div>
+              <div class="stat-value gradient-text" id="stat-completed">0</div>
+              <div class="progress-bar-container"><div class="progress-bar" id="stat-progress" style="width: 0%"></div></div>
+            </div>
+            <div class="stat-card glass-panel">
+              <div class="stat-label">Urgent</div>
+              <div class="stat-value gradient-text" id="stat-urgent">0</div>
+            </div>
           </div>
-          <div class="progress-track"><div class="progress-fill bg-info" id="stat-total-bar" style="width: 0%"></div></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-label">Completed</span>
-            <span class="stat-value" id="stat-completed-val">0</span>
+
+          <form class="quick-add glass-panel" id="quick-add-form">
+            <input type="text" id="quick-add-input" placeholder="Quick add task for today..." required autocomplete="off">
+            <button type="submit" class="btn-primary icon-btn"><i data-lucide="plus"></i></button>
+          </form>
+
+          <div class="dashboard-lists">
+            <section class="task-section">
+              <h3 class="section-title">Today</h3>
+              <div class="task-list" id="dashboard-today-list"></div>
+            </section>
+            <section class="task-section">
+              <h3 class="section-title">Upcoming</h3>
+              <div class="task-list" id="dashboard-upcoming-list"></div>
+            </section>
           </div>
-          <div class="progress-track"><div class="progress-fill bg-accent" id="stat-completed-bar" style="width: 0%"></div></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-header">
-            <span class="stat-label">Urgent</span>
-            <span class="stat-value" id="stat-urgent-val">0</span>
+
+        <!-- My Tasks Page -->
+        <div id="page-tasks" class="page">
+          <div class="tasks-controls">
+            <div class="search-bar glass-panel">
+              <i data-lucide="search"></i>
+              <input type="text" id="search-input" placeholder="Search tasks...">
+            </div>
+            <div class="filter-scroll">
+              <div class="filters">
+                <button class="filter-chip active" data-filter="All">All</button>
+                <button class="filter-chip" data-filter="Active">Active</button>
+                <button class="filter-chip" data-filter="Done">Done</button>
+                <button class="filter-chip" data-filter="Urgent">Urgent</button>
+                <button class="filter-chip" data-filter="Medium">Medium</button>
+                <button class="filter-chip" data-filter="Low">Low</button>
+              </div>
+            </div>
+            <div class="sort-control">
+              <select id="sort-select" class="glass-panel">
+                <option value="dueDate">Due Date</option>
+                <option value="priority">Priority</option>
+                <option value="created">Created</option>
+                <option value="alpha">Alphabetical</option>
+              </select>
+            </div>
           </div>
-          <div class="progress-track"><div class="progress-fill bg-danger" id="stat-urgent-bar" style="width: 0%"></div></div>
+          
+          <div class="task-list full-list" id="my-tasks-list"></div>
+          
+          <div class="empty-state" id="tasks-empty-state" hidden>
+            <i data-lucide="inbox"></i>
+            <p>No tasks found.</p>
+          </div>
         </div>
-      </div>
 
-      <form class="task-input-bar" id="task-form">
-        <input type="text" id="task-title" placeholder="Add a financial task..." autocomplete="off" required>
-        <input type="date" id="task-date" required>
-        <select id="task-priority" required>
-          <option value="Low">Low</option>
-          <option value="Medium" selected>Medium</option>
-          <option value="Urgent">Urgent</option>
-        </select>
-        <button type="submit" class="btn-primary">Add Task</button>
-      </form>
-
-      <div class="filters" id="filters">
-        <button class="filter-chip active" data-filter="All">All</button>
-        <button class="filter-chip" data-filter="Active">Active</button>
-        <button class="filter-chip" data-filter="Done">Done</button>
-        <button class="filter-chip" data-filter="Urgent">Urgent</button>
-      </div>
-
-      <div class="task-groups">
-        <section class="task-group" id="group-today" style="display: none;">
-          <h2 class="group-title">Today</h2>
-          <div class="task-list" id="list-today"></div>
-        </section>
-        
-        <section class="task-group" id="group-upcoming" style="display: none;">
-          <h2 class="group-title">Upcoming</h2>
-          <div class="task-list" id="list-upcoming"></div>
-        </section>
-
-        <div id="empty-state" class="empty-state" hidden>
-          <i data-lucide="check-circle" class="empty-icon"></i>
-          <p>No tasks found. You're all caught up!</p>
+        <!-- Priority Page -->
+        <div id="page-priority" class="page">
+          <div class="kanban-mobile-tabs">
+            <button class="kanban-tab active" data-col="urgent">Urgent</button>
+            <button class="kanban-tab" data-col="medium">Medium</button>
+            <button class="kanban-tab" data-col="low">Low</button>
+          </div>
+          <div class="kanban-board">
+            <div class="kanban-column urgent glass-panel active" data-priority="Urgent">
+              <div class="kanban-header">
+                <h3>Urgent <span class="count-badge" id="count-urgent">0</span></h3>
+              </div>
+              <div class="kanban-list" id="kanban-urgent"></div>
+            </div>
+            <div class="kanban-column medium glass-panel" data-priority="Medium">
+              <div class="kanban-header">
+                <h3>Medium <span class="count-badge" id="count-medium">0</span></h3>
+              </div>
+              <div class="kanban-list" id="kanban-medium"></div>
+            </div>
+            <div class="kanban-column low glass-panel" data-priority="Low">
+              <div class="kanban-header">
+                <h3>Low <span class="count-badge" id="count-low">0</span></h3>
+              </div>
+              <div class="kanban-list" id="kanban-low"></div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
   </div>
+
+  <button class="fab btn-primary" id="fab-add-task"><i data-lucide="plus"></i></button>
+
+  <!-- Add Task Modal -->
+  <div class="modal-overlay" id="add-modal">
+    <div class="modal-content glass-panel">
+      <div class="modal-header">
+        <h2>New Task</h2>
+        <button class="btn-close" id="btn-close-modal"><i data-lucide="x"></i></button>
+      </div>
+      <form id="full-add-form" class="modal-form">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" id="modal-title" required autocomplete="off" placeholder="What needs to be done?">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Due Date</label>
+            <input type="date" id="modal-date" required>
+          </div>
+          <div class="form-group">
+            <label>Priority</label>
+            <select id="modal-priority" required>
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Urgent">Urgent</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <input type="text" id="modal-category" placeholder="e.g., Work, Personal, Finance">
+        </div>
+        <div class="form-group">
+          <label>Notes (optional)</label>
+          <textarea id="modal-notes" rows="3" placeholder="Additional details..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary full-width">Create Task</button>
+      </form>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
