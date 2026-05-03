@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPAY Task - Financial Task Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style/main.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="logo">
+        <i data-lucide="wallet"></i> IPAY Task
+      </div>
+      <nav class="nav">
+        <a href="#" class="nav-item active"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+        <a href="#" class="nav-item"><i data-lucide="check-circle"></i> My Tasks</a>
+        <a href="#" class="nav-item"><i data-lucide="calendar"></i> Upcoming</a>
+        <a href="#" class="nav-item"><i data-lucide="flag"></i> Priority</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <h1 class="page-title">Dashboard</h1>
+        <div class="avatar">U</div>
+      </header>
+
+      <div class="stats-bar">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Total Tasks</span>
+            <span class="stat-value" id="stat-total-val">0</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill bg-info" id="stat-total-bar" style="width: 0%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Completed</span>
+            <span class="stat-value" id="stat-completed-val">0</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill bg-accent" id="stat-completed-bar" style="width: 0%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Urgent</span>
+            <span class="stat-value" id="stat-urgent-val">0</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill bg-danger" id="stat-urgent-bar" style="width: 0%"></div></div>
+        </div>
+      </div>
+
+      <form class="task-input-bar" id="task-form">
+        <input type="text" id="task-title" placeholder="Add a financial task..." autocomplete="off" required>
+        <input type="date" id="task-date" required>
+        <select id="task-priority" required>
+          <option value="Low">Low</option>
+          <option value="Medium" selected>Medium</option>
+          <option value="Urgent">Urgent</option>
+        </select>
+        <button type="submit" class="btn-primary">Add Task</button>
+      </form>
+
+      <div class="filters" id="filters">
+        <button class="filter-chip active" data-filter="All">All</button>
+        <button class="filter-chip" data-filter="Active">Active</button>
+        <button class="filter-chip" data-filter="Done">Done</button>
+        <button class="filter-chip" data-filter="Urgent">Urgent</button>
+      </div>
+
+      <div class="task-groups">
+        <section class="task-group" id="group-today" style="display: none;">
+          <h2 class="group-title">Today</h2>
+          <div class="task-list" id="list-today"></div>
+        </section>
+        
+        <section class="task-group" id="group-upcoming" style="display: none;">
+          <h2 class="group-title">Upcoming</h2>
+          <div class="task-list" id="list-upcoming"></div>
+        </section>
+
+        <div id="empty-state" class="empty-state" hidden>
+          <i data-lucide="check-circle" class="empty-icon"></i>
+          <p>No tasks found. You're all caught up!</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
